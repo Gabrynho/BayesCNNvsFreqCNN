@@ -41,26 +41,26 @@ def getDataset(dataset):
         ])
 
     if(dataset == 'CIFAR10'):
-        trainset = thvision.datasets.CIFAR10(root='./utils', train=True, download=True, transform=transform_cifar)
-        testset = thvision.datasets.CIFAR10(root='./utils', train=False, download=True, transform=transform_cifar)
+        trainset = torchvision.datasets.CIFAR10(root='./utils', train=True, download=True, transform=transform_cifar)
+        testset = torchvision.datasets.CIFAR10(root='./utils', train=False, download=True, transform=transform_cifar)
         num_classes = 10
         inputs=3
 
     elif(dataset == 'CIFAR100'):
-        trainset = thvision.datasets.CIFAR100(root='./utils', train=True, download=True, transform=transform_cifar)
-        testset = thvision.datasets.CIFAR100(root='./utils', train=False, download=True, transform=transform_cifar)
+        trainset = torchvision.datasets.CIFAR100(root='./utils', train=True, download=True, transform=transform_cifar)
+        testset = torchvision.datasets.CIFAR100(root='./utils', train=False, download=True, transform=transform_cifar)
         num_classes = 100
         inputs = 3
 # entrambi da modifiare per il flipper
     elif(dataset == "MIXED_CIFAR10"):
-        trainset = thvision.datasets.CIFAR10(root='./utils', train=True, download=True, transform=transform_cifar)
-        testset = thvision.datasets.CIFAR10(root='./utils', train=False, download=True, transform=transform_cifar)
+        trainset = torchvision.datasets.CIFAR10(root='./utils', train=True, download=True, transform=transform_cifar)
+        testset = torchvision.datasets.CIFAR10(root='./utils', train=False, download=True, transform=transform_cifar)
         num_classes = 10
         inputs=3
         
     elif(dataset == 'MIXED_CIFAR100'):
-        trainset = thvision.datasets.CIFAR100(root='./utils', train=True, download=True, transform=transform_cifar)
-        testset = thvision.datasets.CIFAR100(root='./utils', train=False, download=True, transform=transform_cifar)
+        trainset = torchvision.datasets.CIFAR100(root='./utils', train=True, download=True, transform=transform_cifar)
+        testset = torchvision.datasets.CIFAR100(root='./utils', train=False, download=True, transform=transform_cifar)
         num_classes = 100
         inputs = 3
         # Qui vanno messe cose che servono a fare il mix delle classi su una porzione del dataset di training

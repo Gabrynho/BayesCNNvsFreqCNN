@@ -24,7 +24,7 @@ def acc(outputs, targets):
 
 
 def calculate_kl(mu_q, sig_q, mu_p, sig_p):
-    kl = 0.5 * (2 * torch.log(sig_p / sig_q) - 1 + (sig_q / sig_p).pow(2) + ((mu_p - mu_q) / sig_p).pow(2)).sum()
+    kl = 0.5 * (2 * th.log(sig_p / sig_q) - 1 + (sig_q / sig_p).pow(2) + ((mu_p - mu_q) / sig_p).pow(2)).sum()
     return kl
 
 
@@ -49,8 +49,8 @@ def logmeanexp(x, dim=None, keepdim=False):
     
     if dim is None:
         x, dim = x.view(-1), 0
-    x_max, _ = torch.max(x, dim, keepdim=True)
-    x = x_max + torch.log(torch.mean(torch.exp(x - x_max), dim, keepdim=True))
+    x_max, _ = th.max(x, dim, keepdim=True)
+    x = x_max + th.log(th.mean(th.exp(x - x_max), dim, keepdim=True))
     return x if keepdim else x.squeeze(dim)
 
 def adjust_learning_rate(optimizer, lr):
