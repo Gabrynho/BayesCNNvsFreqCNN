@@ -1,28 +1,22 @@
-import torch.nn as nn
+import torch as th
+import th.nn as nn
 import math
-from layers import BBB_Linear, BBB_Conv2d
-from layers import BBB_LRT_Linear, BBB_LRT_Conv2d
-from layers import FlattenLayer, ModuleWrapper
-
+from BBBLinear import BBB_Linear
+from BBBConv import BBB_Conv2d
+from Module_Wrapper import FlattenLayer, ModuleWrapper
 
 class BBBAlexNet(ModuleWrapper):
     '''The architecture of AlexNet with Bayesian Layers'''
 
-    def __init__(self, outputs, inputs, priors, layer_type='lrt', activation_type='softplus'):
+    def __init__(self, outputs, inputs, priors, activation_type='softplus'):
         super(BBBAlexNet, self).__init__()
 
         self.num_classes = outputs
         self.layer_type = layer_type
         self.priors = priors
 
-        if layer_type=='lrt':
-            BBBLinear = BBB_LRT_Linear
-            BBBConv2d = BBB_LRT_Conv2d
-        elif layer_type=='bbb':
-            BBBLinear = BBB_Linear
-            BBBConv2d = BBB_Conv2d
-        else:
-            raise ValueError("Undefined layer_type")
+        BBBLinear = BBB_Linear
+        BBBConv2d = BBB_Conv2d
         
         if activation_type=='softplus':
             self.act = nn.Softplus

@@ -1,9 +1,7 @@
-
 import numpy as np
-import torch.nn.functional as F
-from torch import nn
-import torch
-
+import torch as th
+from th import nn
+import th.nn.functional as F
 
 class ELBO(nn.Module):
     def __init__(self, train_size):
@@ -45,3 +43,17 @@ def get_beta(batch_idx, m, beta_type, epoch, num_epochs):
     else:
         beta = 0
     return beta
+
+def logmeanexp(x, dim=None, keepdim=False):
+    """Stable computation of log(mean(exp(x))"""
+    
+    if dim is None:
+        x, dim = x.view(-1), 0
+    x_max, _ = torch.max(x, dim, keepdim=True)
+    x = x_max + torch.log(torch.mean(torch.exp(x - x_max), dim, keepdim=True))
+    return x if keepdim else x.squeeze(dim)
+
+def adjust_learning_rate(optimizer, lr):
+    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
+    for param_group in optimizer.param_groups:
+        param_group['lr'] = lr

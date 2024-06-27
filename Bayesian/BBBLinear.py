@@ -1,15 +1,12 @@
-import sys
-sys.path.append("..")
-
+#import sys
+#sys.path.append("..")
 import math
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
-from torch.nn import Parameter
-
-from metrics import calculate_kl as KL_DIV
-from ..misc import ModuleWrapper
-
+import torch as th
+import th.nn as nn
+import th.nn.functional as F
+from th.nn import Parameter
+from utils.metrics import calculate_kl as KL_DIV
+from Module_Wrapper import ModuleWrapper
 
 class BBBLinear(ModuleWrapper):
     def __init__(self, in_features, out_features, bias=True, priors=None):
@@ -17,7 +14,7 @@ class BBBLinear(ModuleWrapper):
         self.in_features = in_features
         self.out_features = out_features
         self.use_bias = bias
-        self.device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        self.device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
 
         if priors is None:
             priors = {
@@ -31,12 +28,12 @@ class BBBLinear(ModuleWrapper):
         self.posterior_mu_initial = priors['posterior_mu_initial']
         self.posterior_rho_initial = priors['posterior_rho_initial']
 
-        self.W_mu = Parameter(torch.empty((out_features, in_features), device=self.device))
-        self.W_rho = Parameter(torch.empty((out_features, in_features), device=self.device))
+        self.W_mu = Parameter(th.empty((out_features, in_features), device=self.device))
+        self.W_rho = Parameter(th.empty((out_features, in_features), device=self.device))
 
         if self.use_bias:
-            self.bias_mu = Parameter(torch.empty((out_features), device=self.device))
-            self.bias_rho = Parameter(torch.empty((out_features), device=self.device))
+            self.bias_mu = Parameter(th.empty((out_features), device=self.device))
+            self.bias_rho = Parameter(th.empty((out_features), device=self.device))
         else:
             self.register_parameter('bias_mu', None)
             self.register_parameter('bias_rho', None)
@@ -53,13 +50,13 @@ class BBBLinear(ModuleWrapper):
 
     def forward(self, input, sample=True):
         if self.training or sample:
-            W_eps = torch.empty(self.W_mu.size()).normal_(0, 1).to(self.device)
-            self.W_sigma = torch.log1p(torch.exp(self.W_rho))
+            W_eps = th.empty(self.W_mu.size()).normal_(0, 1).to(self.device)
+            self.W_sigma = th.log1p(th.exp(self.W_rho))
             weight = self.W_mu + W_eps * self.W_sigma
 
             if self.use_bias:
-                bias_eps = torch.empty(self.bias_mu.size()).normal_(0, 1).to(self.device)
-                self.bias_sigma = torch.log1p(torch.exp(self.bias_rho))
+                bias_eps = th.empty(self.bias_mu.size()).normal_(0, 1).to(self.device)
+                self.bias_sigma = th.log1p(th.exp(self.bias_rho))
                 bias = self.bias_mu + bias_eps * self.bias_sigma
             else:
                 bias = None
