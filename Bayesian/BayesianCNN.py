@@ -1,9 +1,9 @@
 import torch as th
-import th.nn as nn
+import torch.nn as nn
 import math
-from BBBLinear import BBB_Linear
-from BBBConv import BBB_Conv2d
-from Module_Wrapper import FlattenLayer, ModuleWrapper
+from .BBBLinear import BBBLinear
+from .BBBConv import BBBConv2d
+from .Module_Wrapper import FlattenLayer, ModuleWrapper
 
 class BBBAlexNet(ModuleWrapper):
     '''The architecture of AlexNet with Bayesian Layers'''

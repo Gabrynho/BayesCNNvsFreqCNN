@@ -1,16 +1,14 @@
-from __future__ import print_function
-
 import os
 import argparse
 
 import torch as th
 import numpy as np
-import th.nn as nn
-from th.optim import Adam, lr_scheduler
+import torch.nn as nn
+from torch.optim import Adam, lr_scheduler
 
 from utils import data, metrics
-import config_bayesian as cfg
-from Frequentist.FrequetistCNN import AlexNet
+#import config_bayesian as cfg
+from Frequentist.FrequentistCNN import AlexNet
 
 # CUDA settings
 device = th.device("cuda:0" if th.cuda.is_available() else "cpu")

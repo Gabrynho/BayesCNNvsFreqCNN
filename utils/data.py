@@ -1,9 +1,9 @@
 import numpy as np
 import torch as th
-import thvision
-from th.utils.data import Dataset
-import thvision.transforms as transforms
-from th.utils.data.sampler import SubsetRandomSampler
+import torchvision
+from torch.utils.data import Dataset
+import torchvision.transforms as transforms
+from torch.utils.data.sampler import SubsetRandomSampler
 
 class CustomDataset(Dataset):
     def __init__(self, data, labels, transform=None):

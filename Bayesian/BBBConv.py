@@ -2,11 +2,11 @@
 #sys.path.append("..")
 import math
 import torch as th
-import th.nn as nn
-import th.nn.functional as F
-from th.nn import Parameter
+import torch.nn as nn
+import torch.nn.functional as F
+from torch.nn import Parameter
 from utils.metrics import calculate_kl as KL_DIV
-from Module_Wrapper import ModuleWrapper
+from .Module_Wrapper import ModuleWrapper
 
 class BBBConv2d(ModuleWrapper):
     def __init__(self, in_channels, out_channels, kernel_size,

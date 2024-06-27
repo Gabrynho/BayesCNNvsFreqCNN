@@ -1,6 +1,6 @@
 import torch as th
-import th.nn as nn
-import th.nn.functional as F
+import torch.nn as nn
+import torch.nn.functional as F
 import numpy as np
 
 def conv_init(m):

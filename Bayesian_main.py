@@ -1,15 +1,13 @@
-from __future__ import print_function
-
 import os
 import argparse
 
 import torch as th
 import numpy as np
-from th.optim import Adam, lr_scheduler
-from th.nn import functional as F
+from torch.optim import Adam, lr_scheduler
+from torch.nn import functional as F
 
 from utils import data, metrics
-import config_bayesian as cfg
+#import config_bayesian as cfg
 from Bayesian.BayesianCNN import BBBAlexNet
 
 # CUDA settings

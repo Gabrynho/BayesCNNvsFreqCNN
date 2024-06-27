@@ -1,7 +1,7 @@
 import numpy as np
 import torch as th
-from th import nn
-import th.nn.functional as F
+from torch import nn
+import torch.nn.functional as F
 
 class ELBO(nn.Module):
     def __init__(self, train_size):
