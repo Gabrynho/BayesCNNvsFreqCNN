@@ -64,6 +64,8 @@ def getDataset(dataset):
         num_classes = 100
         inputs = 3
         # Qui vanno messe cose che servono a fare il mix delle classi su una porzione del dataset di training
+        
+    return trainset, testset, inputs, num_classes
 
 
 def getDataloader(trainset, testset, valid_size, batch_size, num_workers):
