@@ -161,4 +161,10 @@ cython_debug/
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
 
-0.4.0
+# Aggiunti dal sottoscritto
+/0.4.0
+
+/utils/cifar-10-batches-py
+/utils/cifar-10-python.tar.gz
+/utils/.DS_Store
+/.DS_Store

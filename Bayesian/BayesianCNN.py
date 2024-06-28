@@ -12,11 +12,7 @@ class BBBAlexNet(ModuleWrapper):
         super(BBBAlexNet, self).__init__()
 
         self.num_classes = outputs
-        self.layer_type = layer_type
         self.priors = priors
-
-        BBBLinear = BBB_Linear
-        BBBConv2d = BBB_Conv2d
         
         if activation_type=='softplus':
             self.act = nn.Softplus
