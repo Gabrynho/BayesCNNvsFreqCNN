@@ -12,7 +12,7 @@ def conv_init(m):
 
 class AlexNet(nn.Module):
 
-    def __init__(self, num_classes, inputs=3):
+    def __init__(self, outputs, inputs):
         super(AlexNet, self).__init__()
         self.features = nn.Sequential(
             nn.Conv2d(inputs, 64, kernel_size=11, stride=4, padding=5),

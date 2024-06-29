@@ -26,7 +26,7 @@ def train_model(net, optimizer, criterion, train_loader):
         optimizer.step()
         train_loss += loss.item()*data.size(0)
         accs.append(metrics.acc(output.detach(), target))
-    return train_loss, np.mean(accs)
+    return train_loss/len(trainloader), np.mean(accs)
 
 
 def validate_model(net, criterion, valid_loader):
@@ -39,7 +39,7 @@ def validate_model(net, criterion, valid_loader):
         loss = criterion(output, target)
         valid_loss += loss.item()*data.size(0)
         accs.append(metrics.acc(output.detach(), target))
-    return valid_loss, np.mean(accs)
+    return valid_loss/len(validloader), np.mean(accs)
 
 
 def run(dataset, net_type):
