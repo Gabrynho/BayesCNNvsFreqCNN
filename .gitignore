@@ -166,5 +166,7 @@ cython_debug/
 
 /utils/cifar-10-batches-py
 /utils/cifar-10-python.tar.gz
+/utils/cifar-100-python.tar.gz
+/utils/cifar-100-python
 /utils/.DS_Store
 /.DS_Store
