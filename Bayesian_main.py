@@ -51,20 +51,21 @@ def validate_model(net, criterion, validloader, num_ens=1, beta_type=0.1, epoch=
     valid_loss = 0.0
     accs = []
 
-    for i, (inputs, labels) in enumerate(validloader):
-        inputs, labels = inputs.to(device), labels.to(device)
-        outputs = th.zeros(inputs.shape[0], net.num_classes, num_ens).to(device)
-        kl = 0.0
-        for j in range(num_ens):
-            net_out, _kl = net(inputs)
-            kl += _kl
-            outputs[:, :, j] = F.log_softmax(net_out, dim=1).data
-
-        log_outputs = metrics.logmeanexp(outputs, dim=2)
-
-        beta = metrics.get_beta(i-1, len(validloader), beta_type, epoch, num_epochs)
-        valid_loss += criterion(log_outputs, labels, kl, beta).item()
-        accs.append(metrics.acc(log_outputs, labels))
+    with torch.no_grad():
+        for i, (inputs, labels) in enumerate(validloader):
+            inputs, labels = inputs.to(device), labels.to(device)
+            outputs = th.zeros(inputs.shape[0], net.num_classes, num_ens).to(device)
+            kl = 0.0
+            for j in range(num_ens):
+                net_out, _kl = net(inputs)
+                kl += _kl
+                outputs[:, :, j] = F.log_softmax(net_out, dim=1).data
+    
+            log_outputs = metrics.logmeanexp(outputs, dim=2)
+    
+            beta = metrics.get_beta(i-1, len(validloader), beta_type, epoch, num_epochs)
+            valid_loss += criterion(log_outputs, labels, kl, beta).item()
+            accs.append(metrics.acc(log_outputs, labels))
 
     return valid_loss/len(validloader), np.mean(accs)
 

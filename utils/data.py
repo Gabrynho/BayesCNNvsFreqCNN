@@ -86,3 +86,21 @@ def getDataloader(trainset, testset, valid_size, batch_size, num_workers):
         num_workers=num_workers)
 
     return train_loader, valid_loader, test_loader
+
+
+def mislabel_data(dataset, num_classes, mislabel_ratio):
+    # Calculate the number of samples to mislabel
+    num_samples = len(dataset)
+    num_mislabel = int(num_samples * mislabel_ratio)
+    # Choose random indices to mislabel
+    indices = np.random.choice(num_samples, num_mislabel, replace=False)
+
+    for idx in indices:
+        # Get the current label
+        _, current_label = dataset[idx]
+        # Generate a new label that is different from the current one
+        new_label = np.random.choice([label for label in range(num_classes) if label != current_label])
+        # Update the label in the dataset
+        dataset.targets[idx] = new_label
+
+    return dataset

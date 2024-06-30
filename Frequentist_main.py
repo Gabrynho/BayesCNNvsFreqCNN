@@ -26,20 +26,22 @@ def train_model(net, optimizer, criterion, train_loader):
         optimizer.step()
         train_loss += loss.item()*data.size(0)
         accs.append(metrics.acc(output.detach(), target))
-    return train_loss/len(trainloader), np.mean(accs)
+    return train_loss/len(train_loader), np.mean(accs)
 
 
 def validate_model(net, criterion, valid_loader):
     valid_loss = 0.0
     net.eval()
     accs = []
-    for data, target in valid_loader:
-        data, target = data.to(device), target.to(device)
-        output = net(data)
-        loss = criterion(output, target)
-        valid_loss += loss.item()*data.size(0)
-        accs.append(metrics.acc(output.detach(), target))
-    return valid_loss/len(validloader), np.mean(accs)
+
+    with torch.no_grad():
+        for data, target in valid_loader:
+            data, target = data.to(device), target.to(device)
+            output = net(data)
+            loss = criterion(output, target)
+            valid_loss += loss.item()*data.size(0)
+            accs.append(metrics.acc(output.detach(), target))
+    return valid_loss/len(valid_loader), np.mean(accs)
 
 
 def run(dataset, net_type):
