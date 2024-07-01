@@ -51,24 +51,8 @@ def getDataset(dataset):
         testset = torchvision.datasets.CIFAR100(root='./utils', train=False, download=True, transform=transform_cifar)
         num_classes = 100
         inputs = 3
-# entrambi da modifiare per il flipper
-    elif(dataset == "MIXED_CIFAR10"):
-        trainset = torchvision.datasets.CIFAR10(root='./utils', train=True, download=True, transform=transform_cifar)
-        testset = torchvision.datasets.CIFAR10(root='./utils', train=False, download=True, transform=transform_cifar)
-        num_classes = 10
-        inputs=3
-        
-    elif(dataset == 'MIXED_CIFAR100'):
-        trainset = torchvision.datasets.CIFAR100(root='./utils', train=True, download=True, transform=transform_cifar)
-        testset = torchvision.datasets.CIFAR100(root='./utils', train=False, download=True, transform=transform_cifar)
-        num_classes = 100
-        inputs = 3
-        # Qui vanno messe cose che servono a fare il mix delle classi su una porzione del dataset di training
-        
-    return trainset, testset, inputs, num_classes
 
-
-def getDataloader(trainset, testset, valid_size, batch_size, num_workers):
+def getDataloader(trainset, testset, valid_size, batch_size):
     num_train = len(trainset)
     indices = list(range(num_train))
     np.random.shuffle(indices)
@@ -79,11 +63,11 @@ def getDataloader(trainset, testset, valid_size, batch_size, num_workers):
     valid_sampler = SubsetRandomSampler(valid_idx)
 
     train_loader = th.utils.data.DataLoader(trainset, batch_size=batch_size,
-        sampler=train_sampler, num_workers=num_workers)
+        sampler=train_sampler, pin_memory=True)
     valid_loader = th.utils.data.DataLoader(trainset, batch_size=batch_size, 
-        sampler=valid_sampler, num_workers=num_workers)
+        sampler=valid_sampler, pin_memory=True)
     test_loader = th.utils.data.DataLoader(testset, batch_size=batch_size, 
-        num_workers=num_workers)
+        pin_memory=True)
 
     return train_loader, valid_loader, test_loader
 
