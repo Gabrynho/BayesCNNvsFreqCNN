@@ -52,6 +52,8 @@ def getDataset(dataset):
         num_classes = 100
         inputs = 3
 
+    return trainset, testset, inputs, num_classes
+
 def getDataloader(trainset, testset, valid_size, batch_size):
     num_train = len(trainset)
     indices = list(range(num_train))
