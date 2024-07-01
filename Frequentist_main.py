@@ -34,7 +34,7 @@ def validate_model(net, criterion, valid_loader):
     net.eval()
     accs = []
 
-    with torch.no_grad():
+    with th.no_grad():
         for data, target in valid_loader:
             data, target = data.to(device), target.to(device)
             output = net(data)
