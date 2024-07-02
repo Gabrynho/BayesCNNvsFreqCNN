@@ -24,7 +24,7 @@ priors = {
 
 n_epochs = 100
 lr_start =  [0.005]
-batch_size = [256, 512]
+batch_size = [128]
 hp_tuning = list(itertools.product(lr_start, batch_size))
 valid_size = 0.2
 beta_type = "Blundell"
