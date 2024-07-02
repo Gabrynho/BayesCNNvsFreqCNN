@@ -23,7 +23,7 @@ priors = {
 }
 
 n_epochs = 100
-lr_start =  0.0005
+lr_start =  [0.0005]
 batch_size = [256, 512]
 hp_tuning = list(itertools.product(lr_start, batch_size))
 valid_size = 0.2
