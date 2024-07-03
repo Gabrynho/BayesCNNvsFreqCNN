@@ -9,4 +9,4 @@
 #SBATCH --gpus=1
 
 source /u/dssc/gmasella/jupyter/bin/activate
-python3 /u/dssc/gmasella/BayesCNNvsFreqCNN/c10_training_lr0.0005.py
+python3 /u/dssc/gmasella/BayesCNNvsFreqCNN/f10_training.py
