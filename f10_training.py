@@ -4,6 +4,7 @@ import os
 import csv
 import itertools
 import torch as th
+import torch.nn as nn
 from torch.optim import Adam, lr_scheduler
 
 from utils import data, metrics
