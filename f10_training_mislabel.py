@@ -17,6 +17,9 @@ from Frequentist.FrequentistCNN import AlexNet
 device = th.device("cuda" if th.cuda.is_available() else "cpu")
 print(device)
 
+# Dataset and Dataloader
+c10_trainset, c10_testset, c10_inputs, c10_outputs = data.getDataset('CIFAR10')
+
 # Set the parameters
 priors = {
     'prior_mu': 0,
@@ -34,17 +37,18 @@ lr_start_c10 = 0.001
 #lr_start_c100 = 0.0005
 batch_size = 128
 
-# Dataset and Dataloader
-c10_trainset, c10_testset, c10_inputs, c10_outputs = data.getDataset('CIFAR10')
-c10_train_loader, c10_valid_loader, c10_test_loader = data.getDataloader(
-    c10_trainset, c10_testset, valid_size, batch_size)
+mislabel_perc = [0.05, 0.1, 0.2, 0.4]
 
-# FrequentistCNN on CIFAR10
-filename = f"results_f10_lr{lr_start_c10}_batch{batch_size}.csv"
+for perc in mislabel_perc:
+    filename = f"results_frequentist_mislabel_{perc}.csv"
 
-with open(filename, mode='w', newline='') as file:
+    # Mislabel of the CIFAR10 trainset
+    c10_train_loader_mislabel, c10_valid_loader, c10_test_loader, _ = data.getDataloader_mislabel(
+        c10_trainset, c10_testset, valid_size, batch_size, mislabel_percentage=perc)
+
+    with open(filename, mode='w', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow(['Epoch', 'Training Loss', 'Training Accuracy', 'Validation Loss', 'Validation Accuracy', 'Train KL Div'])
+        writer.writerow(['Epoch', 'Training Loss', 'Training Accuracy', 'Validation Loss', 'Validation Accuracy'])
 
         fc10_net = AlexNet(c10_outputs, c10_inputs).to(device)
         fc10_criterion = nn.CrossEntropyLoss()
@@ -52,7 +56,7 @@ with open(filename, mode='w', newline='') as file:
         fc10_lr_sched = lr_scheduler.ReduceLROnPlateau(fc10_optimizer, patience=6, verbose=True)
         fc10_valid_loss_max = np.Inf
         
-        ckpt_name = 'Frequentist/Models/fc10.pth'
+        ckpt_name = f'Frequentist/Models/frequentist_mislabel_{perc}.pth'
         if os.path.isfile(ckpt_name):
             checkpoint = th.load(ckpt_name)
             fc10_net.load_state_dict(checkpoint['model_state_dict'])
@@ -66,7 +70,7 @@ with open(filename, mode='w', newline='') as file:
         
         for epoch in tqdm(range(start_epoch, n_epochs)):
         
-            fc10_train_loss, fc10_train_acc = FCNN.train_model(fc10_net, fc10_optimizer, fc10_criterion, c10_train_loader)
+            fc10_train_loss, fc10_train_acc = FCNN.train_model(fc10_net, fc10_optimizer, fc10_criterion, c10_train_loader_mislabel)
             fc10_valid_loss, fc10_valid_acc = FCNN.validate_model(fc10_net, fc10_criterion, c10_valid_loader)
             fc10_lr_sched.step(fc10_valid_loss)
         

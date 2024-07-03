@@ -170,3 +170,4 @@ cython_debug/
 /utils/cifar-100-python
 /utils/.DS_Store
 /.DS_Store
+.DS_Store
