@@ -7,7 +7,6 @@ from torch.optim import Adam, lr_scheduler
 from torch.nn import functional as F
 
 from utils import data, metrics
-#import config_bayesian as cfg
 from Bayesian.BayesianCNN import BBBAlexNet
 
 # CUDA settings
