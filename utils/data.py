@@ -60,7 +60,6 @@ def getDataloader_mislabel(trainset, testset, valid_size, batch_size, mislabel_p
     mislabeled_trainset = copy.deepcopy(trainset)
 
     # Mislabel a custom percentage of labels in the trainset
-    #mislabel_count = int(mislabel_percentage * len(train_idx))
     mislabel_count = int(mislabel_percentage * num_train)
     mislabel_indices = np.random.choice(train_idx, size=mislabel_count, replace=False)
     for idx in mislabel_indices:
@@ -82,26 +81,3 @@ def getDataloader_mislabel(trainset, testset, valid_size, batch_size, mislabel_p
         sampler=train_sampler, pin_memory=True)
 
     return train_loader_mislabel, valid_loader, test_loader, train_loader
-
-
-def mislabel_data(trainset, mislabel_ratio=0.1):
-    # Get the total number of samples in the dataset
-    num_samples = len(trainset)
-    
-    # Calculate the number of samples to mislabel
-    num_mislabel = int(num_samples * mislabel_ratio)
-    
-    # Randomly select samples to mislabel
-    mislabel_indices = np.random.choice(num_samples, num_mislabel, replace=False)
-    
-    for idx in mislabel_indices:
-        # Get the current label
-        current_label = trainset.targets[idx]
-        
-        # Choose a new label that is different from the current one
-        new_label = np.random.choice([i for i in range(trainset.num_classes) if i != current_label])
-        
-        # Mislabel the data
-        trainset.targets[idx] = new_label
-    
-    return trainset

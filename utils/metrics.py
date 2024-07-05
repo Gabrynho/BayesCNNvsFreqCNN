@@ -45,8 +45,3 @@ def logmeanexp(x, dim=None, keepdim=False):
     x_max, _ = th.max(x, dim, keepdim=True)
     x = x_max + th.log(th.mean(th.exp(x - x_max), dim, keepdim=True))
     return x if keepdim else x.squeeze(dim)
-
-def adjust_learning_rate(optimizer, lr):
-    """Sets the learning rate to the initial LR decayed by 10 every 30 epochs"""
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = lr
